@@ -1,7 +1,7 @@
 package com.radioheaven.radioheaven_backend.controller;
 
 import com.radioheaven.radioheaven_backend.model.Song;
-import com.radioheaven.radioheaven_backend.repository.SongRepository;
+import com.radioheaven.radioheaven_backend.service.SongService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -12,15 +12,15 @@ import java.util.List;
 @RequestMapping("/api/songs")
 public class SongController {
 
-    SongRepository songRepository;
+    private final SongService songService;
 
-    public SongController(SongRepository songRepository) {
-        this.songRepository = songRepository;
+    public SongController(SongService songService) {
+        this.songService = songService;
     }
 
     @RequestMapping("/all")
     ResponseEntity<List<Song>> getSongs() {
-        List<Song> songList = songRepository.findAll();
+        List<Song> songList = songService.getSongs();
         if(songList.isEmpty()) {
             return ResponseEntity.notFound().build();
         }

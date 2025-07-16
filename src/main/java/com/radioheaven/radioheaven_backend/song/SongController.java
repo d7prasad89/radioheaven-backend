@@ -1,7 +1,5 @@
-package com.radioheaven.radioheaven_backend.controller;
+package com.radioheaven.radioheaven_backend.song;
 
-import com.radioheaven.radioheaven_backend.model.Song;
-import com.radioheaven.radioheaven_backend.service.SongSermonService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -12,17 +10,17 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/songs")
-public class SongSermonController {
+public class SongController {
 
-    private final SongSermonService songSermonService;
+    private final SongService songService;
 
-    public SongSermonController(SongSermonService songSermonService) {
-        this.songSermonService = songSermonService;
+    public SongController(SongService songService) {
+        this.songService = songService;
     }
 
     @RequestMapping("/all")
     ResponseEntity<List<Song>> getSongs() {
-        List<Song> songList = songSermonService.getSongs();
+        List<Song> songList = songService.getSongs();
         if(songList.isEmpty()) {
             return ResponseEntity.notFound().build();
         }
@@ -33,6 +31,6 @@ public class SongSermonController {
     void postSong(@RequestBody Song song) {
         // Implement the logic to add a new song
         // For example, you can save the song to the database
-         songSermonService.saveSong(song);
+         songService.saveSong(song);
     }
 }

@@ -1,8 +1,8 @@
 package com.radioheaven.radioheaven_backend.song;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @Service
 public class SongService {
@@ -12,8 +12,8 @@ public class SongService {
         this.songRepository = songRepository;
     }
 
-    public List<Song> getSongs() {
-        return songRepository.findAll();
+    public Page<Song> getSongs(int page, int size) {
+        return songRepository.findAll(Pageable.ofSize(page));
     }
 
     public void saveSong(Song song) {

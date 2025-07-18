@@ -20,7 +20,7 @@ public class SongController {
 
     @RequestMapping("/all")
     ResponseEntity<List<Song>> getSongs() {
-        List<Song> songList = songService.getSongs();
+        List<Song> songList = songService.getSongs(10, 10).getContent();
         if(songList.isEmpty()) {
             return ResponseEntity.notFound().build();
         }

@@ -1,6 +1,7 @@
 package com.radioheaven.radioheaven_backend.song;
 
 
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -10,14 +11,14 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class SongDTO {
-    @NotNull
+    @NotBlank
     private String title;
-    @NotNull
+    @NotBlank
     private String artist;
-    @NotNull
+    @NotBlank
     private String album;
     @NotNull
-    private boolean isFavorite;
+    private Boolean isFavorite;
     @NotNull
-    private int lengthInSeconds; // in seconds
+    private Integer lengthInSeconds; // in seconds
 }

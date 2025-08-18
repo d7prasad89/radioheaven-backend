@@ -40,6 +40,7 @@ public class SongController {
         song.setAlbum(songDTO.getAlbum());
         song.setArtist(songDTO.getArtist());
         song.setLengthInSeconds(songDTO.getLengthInSeconds());
+        song.setFavorite(songDTO.getIsFavorite());
 
         // Save the song using the songService
          songService.saveSong(song);

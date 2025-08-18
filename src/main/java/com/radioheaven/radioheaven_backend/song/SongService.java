@@ -19,4 +19,8 @@ public class SongService {
     public void saveSong(Song song) {
         songRepository.save(song);
     }
+
+    public boolean songExistsByTitle(String title) {
+        return songRepository.existsByTitle(title);
+    }
 }

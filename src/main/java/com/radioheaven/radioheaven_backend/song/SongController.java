@@ -30,6 +30,10 @@ public class SongController {
     void postSong(@RequestBody @Valid SongDTO songDTO) {
         // Implement the logic to add a new song
         // For example, you can save the song to the database
+        if (songService.songExistsByTitle(songDTO.getTitle())) {
+            throw new IllegalArgumentException("Song with the same title already exists");
+        }
+
         Song song = new Song();
         song.setTitle(songDTO.getTitle());
         song.setArtist(songDTO.getArtist());

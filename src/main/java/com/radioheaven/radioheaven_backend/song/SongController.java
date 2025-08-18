@@ -1,5 +1,6 @@
 package com.radioheaven.radioheaven_backend.song;
 
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -26,9 +27,17 @@ public class SongController {
     }
 
     @PostMapping("/add")
-    void postSong(@RequestBody Song song) {
+    void postSong(@RequestBody @Valid SongDTO songDTO) {
         // Implement the logic to add a new song
         // For example, you can save the song to the database
+        Song song = new Song();
+        song.setTitle(songDTO.getTitle());
+        song.setArtist(songDTO.getArtist());
+        song.setAlbum(songDTO.getAlbum());
+        song.setArtist(songDTO.getArtist());
+        song.setLengthInSeconds(songDTO.getLengthInSeconds());
+
+        // Save the song using the songService
          songService.saveSong(song);
     }
 }

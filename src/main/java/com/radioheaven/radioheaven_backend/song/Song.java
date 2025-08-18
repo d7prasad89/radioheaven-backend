@@ -20,11 +20,11 @@ public class Song {
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     @Column(nullable = false)
     private Long id;
-
     private String title;
     private String artist;
-    private String fileName;
+    private String album;
     private boolean isFavorite;
+    int lengthInSeconds;
 
     @Override
     public final boolean equals(Object o) {

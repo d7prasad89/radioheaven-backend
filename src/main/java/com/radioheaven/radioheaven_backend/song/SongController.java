@@ -45,4 +45,26 @@ public class SongController {
         // Save the song using the songService
          songService.saveSong(song);
     }
+
+    @PutMapping("/update/{id}")
+    void updateSong(@RequestBody @Valid SongDTO songDTO, @PathVariable Long id) {
+        // Implement the logic to update an existing song
+        if (songDTO.getTitle() == null || songDTO.getTitle().isEmpty()
+                || id == null || id <= 0) {
+            throw new IllegalArgumentException("Invalid song data");
+        }
+        Song song = songService.getSongById(id);
+        if (song == null) {
+            throw new IllegalArgumentException("Song with id " + id + " does not exist");
+        }
+        song.setTitle(songDTO.getTitle());
+        song.setArtist(songDTO.getArtist());
+        song.setAlbum(songDTO.getAlbum());
+        song.setArtist(songDTO.getArtist());
+        song.setLengthInSeconds(songDTO.getLengthInSeconds());
+        song.setFavorite(songDTO.getIsFavorite());
+
+        // Save the updated song using the songService
+        songService.saveSong(song);
+    }
 }

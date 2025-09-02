@@ -16,11 +16,16 @@ public class SongService {
         return songRepository.findAll(Pageable.ofSize(page));
     }
 
-    public void saveSong(Song song) {
+    public Song saveSong(Song song) {
         songRepository.save(song);
+        return song;
     }
 
     public boolean songExistsByTitle(String title) {
         return songRepository.existsByTitle(title);
+    }
+
+    public Song getSongById(Long id) {
+        return songRepository.findById(id).orElse(null);
     }
 }

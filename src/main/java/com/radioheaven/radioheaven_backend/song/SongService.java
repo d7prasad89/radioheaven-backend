@@ -13,7 +13,7 @@ public class SongService {
     }
 
     public Page<Song> getSongs(int page, int size) {
-        return songRepository.findAll(Pageable.ofSize(page));
+        return songRepository.findAll(Pageable.ofSize(size).withPage(page));
     }
 
     public Song saveSong(Song song) {

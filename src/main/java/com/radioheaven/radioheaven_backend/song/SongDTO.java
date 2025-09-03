@@ -11,6 +11,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class SongDTO {
+    private Long id;
     @NotBlank
     private String title;
     @NotBlank

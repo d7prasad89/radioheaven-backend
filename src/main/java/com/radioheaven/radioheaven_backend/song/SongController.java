@@ -18,12 +18,22 @@ public class SongController {
     }
 
     @RequestMapping("/all")
-    ResponseEntity<List<Song>> getSongs() {
-        List<Song> songList = songService.getSongs(10, 10).getContent();
+    ResponseEntity<List<SongDTO>> getSongs() {
+        var songList = songService.getSongs(0, 10).getContent();
         if(songList.isEmpty()) {
             return ResponseEntity.notFound().build();
         }
-        return ResponseEntity.ok(songList);
+        List<SongDTO> dtoList = songList.stream()
+                .map(song -> new SongDTO(
+                        song.getId(),
+                        song.getTitle(),
+                        song.getArtist(),
+                        song.getAlbum(),
+                        song.isFavorite(),
+                        song.getLengthInSeconds()
+                ))
+                .toList();
+        return ResponseEntity.ok(dtoList);
     }
 
     @PostMapping("/add")
@@ -47,7 +57,7 @@ public class SongController {
     }
 
     @PutMapping("/update/{id}")
-    void updateSong(@RequestBody @Valid SongDTO songDTO, @PathVariable Long id) {
+    SongDTO updateSong(@RequestBody @Valid SongDTO songDTO, @PathVariable Long id) {
         // Implement the logic to update an existing song
         if (songDTO.getTitle() == null || songDTO.getTitle().isEmpty()
                 || id == null || id <= 0) {
@@ -65,6 +75,18 @@ public class SongController {
         song.setFavorite(songDTO.getIsFavorite());
 
         // Save the updated song using the songService
-        songService.saveSong(song);
+        Song updatedSong = songService.saveSong(song);
+        if (updatedSong!= null) {
+            return new SongDTO(
+                    updatedSong.getId(),
+                    updatedSong.getTitle(),
+                    updatedSong.getArtist(),
+                    updatedSong.getAlbum(),
+                    updatedSong.isFavorite(),
+                    updatedSong.getLengthInSeconds()
+            );
+        } else {
+            throw new IllegalStateException("Failed to update the song");
+        }
     }
 }

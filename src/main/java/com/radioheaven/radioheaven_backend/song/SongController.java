@@ -1,5 +1,6 @@
 package com.radioheaven.radioheaven_backend.song;
 
+import com.radioheaven.radioheaven_backend.service.B2SignedUrlService;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -33,6 +34,9 @@ public class SongController {
                         song.getLengthInSeconds()
                 ))
                 .toList();
+
+        B2SignedUrlService b2SignedUrlService = new B2SignedUrlService();
+        b2SignedUrlService.generatePresignedUrl();
         return ResponseEntity.ok(dtoList);
     }
 

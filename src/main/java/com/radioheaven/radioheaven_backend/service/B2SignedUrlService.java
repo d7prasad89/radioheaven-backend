@@ -4,19 +4,20 @@ import software.amazon.awssdk.auth.credentials.ProfileCredentialsProvider;
 import software.amazon.awssdk.regions.Region;
 import software.amazon.awssdk.services.s3.S3Client;
 import software.amazon.awssdk.services.s3.model.Bucket;
+import software.amazon.awssdk.services.s3.model.GetObjectRequest;
+import software.amazon.awssdk.services.s3.presigner.S3Presigner;
+import software.amazon.awssdk.services.s3.presigner.model.GetObjectPresignRequest;
 
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.time.Duration;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class B2SignedUrlService {
     public void generatePresignedUrl() {
-        String endpoint = "https://s3.us-east-005.backblazeb2.com"; // Change region if needed
-        String accessKey = "YOUR_B2_KEY_ID";
-        String secretKey = "";
-        String bucket = "radio-heaven";
+
         String key = "songs/NEER_ILLA.mp3"; // path in bucket
 
         // Change this to the endpoint from your bucket details, prefixed with "https://"
@@ -37,34 +38,28 @@ public class B2SignedUrlService {
             // Get the list of buckets
             List<Bucket> buckets = b2.listBuckets().buckets();
 
-            // Iterate through list, printing each bucket's name
-            System.out.println("Buckets in account:");
+
+            System.out.println("Your Amazon B2 buckets are:" + buckets.get(0));
+            // Assume you have bucketName and key (object path)
+            S3Presigner presigner = S3Presigner.builder().region(Region.of(region)).credentialsProvider(ProfileCredentialsProvider.create("b2tutorial")).build();
             for (Bucket bucket1 : buckets) {
-                System.out.println(bucket1.name());
+                String bucketName = bucket1.name();
+                GetObjectRequest getObjectRequest = GetObjectRequest.builder()
+                        .bucket(bucketName)
+                        .key(key)
+                        .build();
+
+                GetObjectPresignRequest presignRequest = GetObjectPresignRequest.builder()
+                        .signatureDuration(Duration.ofMinutes(10))
+                        .getObjectRequest(getObjectRequest)
+                        .build();
+
+                String signedUrl = presigner.presignGetObject(presignRequest).url().toString();
+
+                System.out.println("Signed URL: >>>> " + signedUrl);
+                presigner.close();
             }
 
-//        S3Presigner presigner = S3Presigner.builder()
-//                .endpointOverride(java.net.URI.create(endpoint))
-//                .region(Region.US_EAST_1) // match your bucket region
-//                .credentialsProvider(StaticCredentialsProvider.create(
-//                        AwsBasicCredentials.create(accessKey, secretKey)))
-//                .build();
-//        AwsSessionCredentials awsCreds = AwsSessionCredentials.create(ACCESS_KEY, SECRET_ACCESS_KEY, "");
-//
-//        GetObjectRequest getObjectRequest = GetObjectRequest.builder()
-//                .bucket(bucket)
-//                .key(key)
-//                .build();
-//
-//        GetObjectPresignRequest presignRequest = GetObjectPresignRequest.builder()
-//                .signatureDuration(Duration.ofMinutes(15)) // URL valid for 15 minutes
-//                .getObjectRequest(getObjectRequest)
-//                .build();
-//
-//        URL presignedUrl = presigner.presignGetObject(presignRequest).url();
-//        System.out.println("Presigned URL: " + presignedUrl);
-//
-//        presigner.close();
         } catch (URISyntaxException e) {
             throw new RuntimeException(e);
         }

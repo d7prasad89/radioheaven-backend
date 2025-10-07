@@ -22,4 +22,6 @@ public class SongDTO {
     private Boolean isFavorite;
     @NotNull
     private Integer lengthInSeconds; // in seconds
+    @NotNull
+    private String fileUrl; // URL to the song file
 }

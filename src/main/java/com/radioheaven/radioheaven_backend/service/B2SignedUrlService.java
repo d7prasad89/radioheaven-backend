@@ -1,5 +1,6 @@
 package com.radioheaven.radioheaven_backend.service;
 
+import org.springframework.stereotype.Component;
 import software.amazon.awssdk.auth.credentials.ProfileCredentialsProvider;
 import software.amazon.awssdk.regions.Region;
 import software.amazon.awssdk.services.s3.S3Client;
@@ -15,13 +16,15 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+@Component
 public class B2SignedUrlService {
-    public void generatePresignedUrl() {
 
-        String key = "songs/NEER_ILLA.mp3"; // path in bucket
+    public String generatePresignedUrl(String key) {// path in bucket
 
         // Change this to the endpoint from your bucket details, prefixed with "https://"
         String ENDPOINT_URL = "https://s3.us-east-005.backblazeb2.com";
+
+        String signedUrl = "";
 
         Matcher matcher = Pattern.compile("https://s3\\.([a-z0-9-]+)\\.backblazeb2\\.com").matcher(ENDPOINT_URL);
         if (!matcher.find()) {
@@ -54,7 +57,7 @@ public class B2SignedUrlService {
                         .getObjectRequest(getObjectRequest)
                         .build();
 
-                String signedUrl = presigner.presignGetObject(presignRequest).url().toString();
+                signedUrl = presigner.presignGetObject(presignRequest).url().toString();
 
                 System.out.println("Signed URL: >>>> " + signedUrl);
                 presigner.close();
@@ -63,5 +66,6 @@ public class B2SignedUrlService {
         } catch (URISyntaxException e) {
             throw new RuntimeException(e);
         }
+        return signedUrl;
     }
 }

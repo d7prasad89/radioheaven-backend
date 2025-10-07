@@ -14,8 +14,11 @@ public class SongController {
 
     private final SongService songService;
 
-    public SongController(SongService songService) {
+    private final B2SignedUrlService b2SignedUrlService;
+
+    public SongController(SongService songService, B2SignedUrlService b2SignedUrlService) {
         this.songService = songService;
+        this.b2SignedUrlService = b2SignedUrlService;
     }
 
     @RequestMapping("/all")
@@ -31,12 +34,11 @@ public class SongController {
                         song.getArtist(),
                         song.getAlbum(),
                         song.isFavorite(),
-                        song.getLengthInSeconds()
+                        song.getLengthInSeconds(),
+                        b2SignedUrlService.generatePresignedUrl(song.getTitle())
                 ))
                 .toList();
 
-        B2SignedUrlService b2SignedUrlService = new B2SignedUrlService();
-        b2SignedUrlService.generatePresignedUrl();
         return ResponseEntity.ok(dtoList);
     }
 
@@ -87,7 +89,8 @@ public class SongController {
                     updatedSong.getArtist(),
                     updatedSong.getAlbum(),
                     updatedSong.isFavorite(),
-                    updatedSong.getLengthInSeconds()
+                    updatedSong.getLengthInSeconds(),
+                    ""
             );
         } else {
             throw new IllegalStateException("Failed to update the song");

@@ -1,6 +1,5 @@
 package com.radioheaven.radioheaven_backend.song;
 
-import com.radioheaven.radioheaven_backend.service.B2SignedUrlService;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -14,11 +13,9 @@ public class SongController {
 
     private final SongService songService;
 
-    private final B2SignedUrlService b2SignedUrlService;
 
-    public SongController(SongService songService, B2SignedUrlService b2SignedUrlService) {
+    public SongController(SongService songService) {
         this.songService = songService;
-        this.b2SignedUrlService = b2SignedUrlService;
     }
 
     @RequestMapping("/all")
@@ -35,7 +32,8 @@ public class SongController {
                         song.getAlbum(),
                         song.isFavorite(),
                         song.getLengthInSeconds(),
-                        b2SignedUrlService.generatePresignedUrl(song.getTitle())
+                        "URL_TO_BE_ADDED",
+                        "URL_TO_BE_ADDED"
                 ))
                 .toList();
 
@@ -90,6 +88,7 @@ public class SongController {
                     updatedSong.getAlbum(),
                     updatedSong.isFavorite(),
                     updatedSong.getLengthInSeconds(),
+                    "",
                     ""
             );
         } else {

@@ -23,6 +23,8 @@ public class Song {
     private String title;
     private String artist;
     private String album;
+    private String audioUrl;
+    private String coverImageUrl;
     private boolean isFavorite;
     int lengthInSeconds;
 

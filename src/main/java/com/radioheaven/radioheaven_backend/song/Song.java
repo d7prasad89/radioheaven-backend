@@ -1,7 +1,10 @@
-package com.radioheaven.radioheaven_backend.model;
+package com.radioheaven.radioheaven_backend.song;
 
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 import org.hibernate.proxy.HibernateProxy;
 
 import java.util.Objects;
@@ -17,11 +20,13 @@ public class Song {
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     @Column(nullable = false)
     private Long id;
-
     private String title;
     private String artist;
-    private String fileName;
+    private String album;
+    private String audioUrl;
+    private String coverImageUrl;
     private boolean isFavorite;
+    int lengthInSeconds;
 
     @Override
     public final boolean equals(Object o) {

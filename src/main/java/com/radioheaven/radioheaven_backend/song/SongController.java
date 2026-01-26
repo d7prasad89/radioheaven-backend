@@ -32,8 +32,8 @@ public class SongController {
                         song.getAlbum(),
                         song.isFavorite(),
                         song.getLengthInSeconds(),
-                        "URL_TO_BE_ADDED",
-                        "URL_TO_BE_ADDED"
+                        song.getCoverImageUrl(),
+                        song.getAudioUrl()
                 ))
                 .toList();
 
@@ -55,6 +55,8 @@ public class SongController {
         song.setArtist(songDTO.getArtist());
         song.setLengthInSeconds(songDTO.getLengthInSeconds());
         song.setFavorite(songDTO.getIsFavorite());
+        song.setAudioUrl(songDTO.getFileUrl());
+        song.setCoverImageUrl(songDTO.getCoverImageURL());
 
         // Save the song using the songService
          songService.saveSong(song);
@@ -77,6 +79,8 @@ public class SongController {
         song.setArtist(songDTO.getArtist());
         song.setLengthInSeconds(songDTO.getLengthInSeconds());
         song.setFavorite(songDTO.getIsFavorite());
+        song.setAudioUrl(songDTO.getFileUrl());
+        song.setCoverImageUrl(songDTO.getCoverImageURL());
 
         // Save the updated song using the songService
         Song updatedSong = songService.saveSong(song);

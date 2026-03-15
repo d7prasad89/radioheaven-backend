@@ -38,4 +38,15 @@ build/
 *.swo
 *~
 
+### Secrets & Configuration ###
+config/serviceAccountKey.json
+serviceAccountKey.json
+*.key
+*.pem
+.env
+.env.local
+.env.*.local
+.env.production
+credentials.json
+secrets.json
 

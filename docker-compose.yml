@@ -22,11 +22,14 @@ services:
     build: .
     container_name: radioheaven-app
     environment:
-      DB_HOST: mysql
-      DB_PORT: 3306
-      DB_USERNAME: radiouser
-      DB_PASSWORD: radiopass
+      DB_HOST: ${DB_HOST:-mysql}
+      DB_PORT: ${DB_PORT:-3306}
+      DB_USERNAME: ${DB_USERNAME:-radiouser}
+      DB_PASSWORD: ${DB_PASSWORD:-radiopass}
+      FIREBASE_KEY_PATH: ${FIREBASE_KEY_PATH:-/app/config/serviceAccountKey.json}
       SPRING_PROFILES_ACTIVE: docker
+    volumes:
+      - ./config/serviceAccountKey.json:/app/config/serviceAccountKey.json:ro
     ports:
       - "8080:8080"
     depends_on:

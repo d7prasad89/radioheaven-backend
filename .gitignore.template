@@ -1,0 +1,14 @@
+# Copy this content to .gitignore if not already present
+
+# Sensitive files - NEVER commit these
+config/serviceAccountKey.json
+serviceAccountKey.json
+*.key
+*.pem
+.env
+.env.local
+.env.*.local
+
+# Credentials
+credentials.json
+secrets.json
